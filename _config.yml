@@ -1,0 +1,46 @@
+# Welcome to Jekyll!
+
+# 基础设置
+title: qianxmiii    #博客的标题
+SEOTitle: qianxmiii blog  #显示在浏览器上搜索的时候显示的标题
+header-img: img/home-bg.jpg     #显示在首页的背景图片
+email: qianxmiii@163.com
+description: "Code makes life better!"   #网站介绍
+keyword: "qianxmiii" #关键词
+
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://qianxmiii.github.io"    # 博客地址
+
+# 侧边栏
+# Sidebar settings
+sidebar: true                           # 是否开启侧边栏.
+sidebar-about-description: "Code makes life better!"
+sidebar-avatar: /img/head-pic.jpg     # 个人头像
+
+# 社交账号
+# SNS settings
+RSS: false
+weibo_username:     qianxmiii
+zhihu_username:     qianxmiii
+facebook_username:  qianxmiii
+jianshu_username:   jianshu_id
+twitter_username: jekyllrb
+github_username:  jekyll
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
