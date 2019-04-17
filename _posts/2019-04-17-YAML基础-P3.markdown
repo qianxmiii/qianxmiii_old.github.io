@@ -1,0 +1,77 @@
+---
+layout: post
+title:  "YAML 基础"
+date:   2019-04-17 13:45:00 +0800
+categories: jekyll update
+---
+![](/img/post/P3-headimg.jpg)
+
+## YAML基础
+
+### YAML 简介
+YAML 是专门用来写配置文件的语言
+
+### YAML 基本语法规则
+ - 大小写敏感
+ - 使用缩进表示层级关系
+ - 缩进时不允许使用Tab键，只允许使用空格。
+ - 缩进的空格数目不重要，只要相同层级的元素左侧对齐即可
+ - "#" 代表注释
+ 
+### YAML 支持的数据结构
+ - 对象：键值对的集合，又称为映射（mapping）/ 哈希（hashes） / 字典（dictionary）
+ - 数组：一组按次序排列的值，又称为序列（sequence） / 列表（list）
+ - 纯量（scalars）：单个的、不可再分的值
+ 
+# 一、**对象** 
+对象的一组键值对，使用冒号结构表示。
+```
+animal: pets
+```
+转为 JavaScript 如下
+``` javascript
+{ animal: 'pets' }
+```
+
+# 二、**数组**
+一组连词线开头的行，构成一个数组
+```
+- Cat
+- Dog
+- Goldfish
+```
+转为 JavaScript 如下
+``` javascript
+[ 'Cat', 'Dog', 'Goldfish' ]
+```
+
+
+# 三、**纯量**
+纯量是最基本的、不可再分的值。以下数据类型都属于 JavaScript 的纯量。
+
+<ul> 
+<li>字符串</li>
+<li>布尔值</li>
+<li>整数</li>
+<li>浮点数</li>
+<li>Null</li>
+<li>时间</li>
+<li>日期</li>
+</ul>
+
+数值直接以字面量的形式表示
+```
+number: 12.30
+```
+布尔值用`true`和`false`表示。
+```
+isSet: true
+```
+`null`用`~`表示。
+```
+parent: ~ 
+```
+
+参考资料：[阮一峰的YAML 语言教程]
+
+[阮一峰的YAML 语言教程]: http://www.ruanyifeng.com/blog/2016/07/yaml.html

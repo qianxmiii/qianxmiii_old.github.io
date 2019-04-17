@@ -6,7 +6,7 @@ SEOTitle: qianxmiii blog  #显示在浏览器上搜索的时候显示的标题
 header-img: img/home-bg.jpg     #显示在首页的背景图片
 email: qianxmiii@163.com
 description: "Code makes life better!"   #网站介绍
-keyword: "qianxmiii" #关键词
+keyword: "leanring" #关键词
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://qianxmiii.github.io"    # 博客地址
