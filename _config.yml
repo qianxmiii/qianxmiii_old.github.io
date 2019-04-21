@@ -1,12 +1,12 @@
 # Welcome to Jekyll!
 
 # 基础设置
-title: qianxmiii    #博客的标题
-SEOTitle: qianxmiii blog  #显示在浏览器上搜索的时候显示的标题
+title: Qianxmiii Blog    #博客的标题
+SEOTitle: 钱雪蒙的博客 | Qianxmiii Blog  #显示在浏览器上搜索的时候显示的标题
 header-img: img/home-bg.jpg     #显示在首页的背景图片
 email: qianxmiii@163.com
-description: "Code makes life better!"   #网站介绍
-keyword: "leanring" #关键词
+description: "Be Better!"   #网站介绍
+keyword: "Blog,个人博客,qianxmiii,leanring" #关键词
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://qianxmiii.github.io"    # 博客地址
@@ -22,25 +22,55 @@ sidebar-avatar: /img/head-pic.jpg     # 个人头像
 RSS: false
 weibo_username:     qianxmiii
 zhihu_username:     qianxmiii
-facebook_username:  qianxmiii
+#facebook_username:  qianxmiii
 jianshu_username:   jianshu_id
-twitter_username: jekyllrb
-github_username:  jekyll
+#twitter_username: jekyllrb
+github_username:  qianxmiii
 
 # Build settings
+permalink: pretty
 markdown: kramdown
+kramdown:
+  input: GFM                            # use Github Flavored Markdown !important
+#highlighter: rouge
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-paginate
 
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+paginate: 5 # 定义每页的博文数量
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+
+# Gitalk 评论
+# 在github申请
+gitalk:
+  enable: true    #是否开启Gitalk评论
+  clientID: 9101b2f889558eced23b                            #生成的clientID
+  clientSecret: 601d8209a3f0c6410c1af1cdf5d8d1aa6a0fcbae    #生成的clientSecret
+  repo: qianxmiii.github.io    #仓库名称
+  owner: qianxmiii    #github用户名
+  admin: qianxmiii
+  distractionFreeMode: true #是否启用类似FB的阴影遮罩
+
+# IntensedeBate
+intensedebate_key: g0rRdAM5oXmwOopjheQo
+
+# 统计
+
+# Analytics settings
+# Baidu Analytics
+ba_track_id: c2fc278ae1706ff80f2f12a23a872230
+
+# Google Analytics
+#ga_track_id: 'UA-90855596-1'            # Format: UA-xxxxxx-xx
+#ga_domain: qiubaiying.top               # 默认的是 auto, 这里我是自定义了的域名，你如果没有自己的域名，需要改成auto
+
+# Featured Tags
+featured-tags: true                     # 是否使用首页标签
+featured-condition-size: 1              # 相同标签数量大于这个数，才会出现在首页
+
+# highlighter 代码高亮 运用Google-Code-Prettify插件
+prettify_onuse: true   # 是否使用该插件
+prettify_skin: tomorrow-night-bright # 主题样式
+

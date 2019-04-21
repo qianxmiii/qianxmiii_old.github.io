@@ -1,0 +1,11 @@
+<!-- 网易云音乐配置 -->
+<!-- 根据page.pid 去_data下music.yml文件夹下取music_id -->
+{% assign music = site.data.music[page.pid] %}
+{% unless music %}
+{% assign music = site.data.music["Default"]%}
+{% endunless %}
+<!-- cloud music -->
+<!-- auto=1 可以控制自动播放与否，当值为 1 即打开网页就自动播放，值为 0 时需要访客手动点击播放 -->
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86
+        src="//music.163.com/outchain/player?type=2&id={{ music.music_id }}&auto=1&height=66">
+</iframe>

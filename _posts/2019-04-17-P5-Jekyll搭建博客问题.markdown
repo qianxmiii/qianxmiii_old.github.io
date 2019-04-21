@@ -1,0 +1,28 @@
+---
+layout: post
+title:  "Jekyll搭建博客遇到的问题"
+date:   2019-04-17 16:18:00 +0800
+categories: posts learn jekyll
+header-img: img/post/P5-headimg.jpeg
+tags:
+    - Jekyll
+pid: P5
+---
+
+### 一、jekyll-paginate
+
+**问题**
+<pre class="prettyprint">
+ You appear to have pagination turned on, but you haven't included the `jekyll-paginate` gem. Ensure you have `plugins: [jekyll-paginate]` in your configuration file.
+</pre>
+
+**解决方法**
+由于jekyll-paginate未安装导致，安装即可。
+<pre class="prettyprint">
+gem install jekyll-paginate
+</pre>
+若还是未解决，需要在Gemfile添加以下配置
+<pre class="prettyprint">
+gem 'jekyll-paginate', group: :jekyll_plugins
+</pre>
+

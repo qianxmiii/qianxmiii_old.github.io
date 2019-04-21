@@ -2,9 +2,13 @@
 layout: post
 title:  "YAML 基础"
 date:   2019-04-17 13:45:00 +0800
-categories: jekyll update
+categories: posts learn jekyll
+header-img: img/post/P3-headimg.jpg
+tags:
+    - Jekyll
+    - YAML
+pid: P3
 ---
-![](/img/post/P3-headimg.jpg)
 
 ## YAML基础
 
@@ -25,25 +29,27 @@ YAML 是专门用来写配置文件的语言
  
 # 一、**对象** 
 对象的一组键值对，使用冒号结构表示。
-```
+<pre class="prettyprint">
 animal: pets
-```
+</pre>
+
 转为 JavaScript 如下
-``` javascript
+<pre class="prettyprint">
 { animal: 'pets' }
-```
+</pre>
 
 # 二、**数组**
 一组连词线开头的行，构成一个数组
-```
+<pre class="prettyprint">
 - Cat
 - Dog
 - Goldfish
-```
+</pre>
+
 转为 JavaScript 如下
-``` javascript
+<pre class="prettyprint">
 [ 'Cat', 'Dog', 'Goldfish' ]
-```
+</pre>
 
 
 # 三、**纯量**
@@ -60,17 +66,19 @@ animal: pets
 </ul>
 
 数值直接以字面量的形式表示
-```
+<pre class="prettyprint">
 number: 12.30
-```
+</pre>
 布尔值用`true`和`false`表示。
-```
+<pre class="prettyprint">
 isSet: true
-```
+</pre>
 `null`用`~`表示。
-```
-parent: ~ 
-```
+<pre class="prettyprint">
+parent: ~
+</pre>
+ 
+
 
 参考资料：[阮一峰的YAML 语言教程]
 

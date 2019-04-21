@@ -1,0 +1,16 @@
+---
+layout: post
+title:  "CMD常用命令"
+date:   2019-04-18 14:42:00
+categories: posts learn windows
+header-img: img/post/P6-headimg.jpeg
+tags:
+    - Windows
+    - CMD
+pid: P6
+---
+
+### 查询端口被占用
+<pre class="prettyprint">
+ netstat -aon|findstr "49157"
+</pre>

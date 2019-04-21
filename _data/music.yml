@@ -1,0 +1,14 @@
+P1:
+    music_name: You Are Beautiful
+    singer: 刘沁
+    music_id: 481535277
+P2:
+    music_name: 盗将行
+    singer: 花粥
+    music_id: 574566207
+Default:
+    music_name: 知秋
+    singer: 孟凡明
+    music_id: 481535277
+
+

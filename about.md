@@ -4,15 +4,35 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+## 简介
+先放一只可爱的小柯基 ~ 
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+<img src="/img/about/about_img1.jpg" height = "150" width = "150">
 
 
-[jekyll-organization]: https://github.com/jekyll
+我也不知道怎么写，在这酝酿了半天，也没什么经历和擅长的模块可写的，我就是一个战五渣。嘤嘤嘤 (ಥ_ಥ)
+跳过这一节吧！
+
+## 其他
+本来是前几天准备多熟悉一下Git操作，突然看到一篇通过Git创建个人博客的文章，因此入了坑，沉迷其中无法自拔。
+每天就想着往博客里加点东西 ✧٩(ˊωˋ*)و✧
+
+可是前端的有一些东西真是不熟啊，css样式呀。这部分需要恶补，不然都不知道怎么设计不一样的主题 ᵎ
+(•̀㉨•́)و ̑̑ 加油
+
+这篇博客是在参考[Hux Blog][Hux Blog]这位博主的基础上搭建出来的，十分感谢！
+
+感觉基本是照搬的，就加了一些小东西，惭愧惭愧！（无地自容中……）
+
+我会继续改进，多加些自己的东西的！
+（这个下面的本站访问次数怪怪的，难道都是我刷新出来的吗……）
+
+
+
+
+[Hux Blog]:https://huangxuan.me/
+
+
+
+
+

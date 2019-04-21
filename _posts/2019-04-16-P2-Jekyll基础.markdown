@@ -2,9 +2,12 @@
 layout: post
 title:  "Jekyll 基础"
 date:   2019-04-16 20:00:05 +0800
-categories: jekyll update
+categories: posts learn jekyll
+header-img: img/post/P2-headimg.jpeg
+tags:
+    - Jekyll
+pid: P2
 ---
-![](/img/post/P2-headimg.jpeg)
 
 ## Jekyll 初识
 
@@ -18,7 +21,8 @@ Jekyll 是一个博客工具，它所完成的工作是将具有特定格式的 
 
 
 ## Jekyll 目录结构
-```
+
+<pre class="prettyprint">
 _posts 博客内容
 _pages 其他需要生成的网页，如About页
 _layouts 网页排版模板
@@ -28,7 +32,7 @@ _data 动态数据
 _sites 最终生成的静态网页
 _config.yml 网站的一些配置信息
 index.html 网站的入口
-```
+</pre>
 
 虽然我实际看到的目录结构是如下的：-_- orz
 ![](/img/post/P2-jekyll-menu.png)
@@ -48,5 +52,15 @@ index.html 网站的入口
 **Gemfile**和**Gemfile.lock**文件 | 这两个文件是用来管理整个项目的依赖的。主题就是在Gemfile中指定的.
 --------------- | --------------------------------------------------------------------------------------------
 
+
+
+
+### 小Tips
+
+- 在自动构建过程中对 `_config.yml` 的修改将不会被包含其中。
+`_config.yml` 管理包含全局配置和变量定义在内的配置文件 并且这些变量定义在执行时会被读取. 所有 `_config.yml` 中的改动 在自动构建过程中，都不会被加载直到下一次执行开始。
+
+- 分页功能只支持 HTML 文件
+Jekyll 的分页功能不支持 Jekyll site 中的 Markdown 或 Textile 文件
 
 [YAML头信息]: http://jekyllcn.com/docs/frontmatter/

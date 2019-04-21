@@ -1,0 +1,68 @@
+---
+layout: post
+title:  "测试专用"
+date:   2019-04-19 20:53:05 +0800
+categories: posts test
+header-img: img/post/P6-headimg.jpeg
+author: qxm
+pid: P0
+tags:
+    - Test
+---
+### _data 测试
+
+**.yml文件**
+
+<ul>
+{% for member in site.data.members %}
+  <li>
+    <a href="https://github.com/{{ member.github }}">
+      {{ member.name }}
+    </a>
+  </li>
+{% endfor %}
+</ul>
+
+**.csv文件**
+
+<ul>
+{% for member2 in site.data.members2 %}
+  <li>
+      {{ member2.fruit }} 的颜色是 {{ member2.color }}
+  </li>
+{% endfor %}
+</ul>
+
+{% assign author = site.data.people[page.author] %}
+{{ site.data.people[page.author].github }}
+作者GitHub地址: 
+<a rel="author" href="{{ author.github }}" title="{{ author.name }}">
+ {{ author.name }}
+</a> 
+ 
+ 文章字数：{{ page.content | number_of_words }}
+ 
+<pre class="prettyprint linenums">
+
+var express = require('express');
+var app = express();
+app.use('/view2', express.static('view2'));
+app.use('/view3', express.static('view3'));
+app.use('/view4', express.static('view4'));
+app.use('/view5', express.static('view5'));
+ 
+var server = app.listen(3001, 'localhost', function () {
+var host = server.address().address;
+var port = server.address().port;
+console.log('Server is running at http://%s:%s', host, port);
+
+</pre>
+
+<pre class="prettyprint linenums">
+public class Test {
+    String tName = "123";
+    int tValue = 123;
+}
+</pre>
+
+{{site.pages.title}}

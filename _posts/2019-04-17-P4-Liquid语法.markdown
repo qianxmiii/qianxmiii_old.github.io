@@ -1,0 +1,216 @@
+---
+layout: post
+title:  "Liquid 语法"
+date:   2019-04-17 16:18:00 +0800
+categories: posts learn jekyll
+header-img: img/post/P4-headimg.jpeg
+tags:
+    - Jekyll
+    - Liquid    
+pid: P4
+---
+
+## Liquid基础
+
+### Liquid 简介
+Liquid 是一门开源的模板语言，由 Shopify 创造并用 Ruby 实现。
+
+### Liquid 代码分类
+Liquid 代码可分为 [对象（object） ](#object) 、[标记（tag） ](#tag) 和 [过滤器（filter） ](#filter)
+
+<p id = "object"></p>
+ 
+### 对象（object）
+**对象** 告诉 Liquid 在页面的哪个位置展示内容。对象和变量名由双花括号标识：{% raw %}{{ 和 }} {% endraw %}。
+
+输入
+{% raw %} 
+<pre class="prettyprint">
+{{ page.title }}
+</pre>
+{% endraw %}
+则输出page.title 对象的内容，即本篇博文的主题如下：
+<pre class="prettyprint">
+ {{ page.title }}
+</pre>
+
+<p id = "tag"></p>
+ 
+### 标记（tag）
+**标记** 创造了模板的逻辑和控制流。他们由单括号加百分号标识：{% raw %} `{%` 和 `%}` {% endraw %}。
+{% comment %} raw 标记临时禁止处理其所包围的代码 {% endcomment %}
+
+标记（tag）并不产生任何可见的文本输出。这意味着你可以用他们为变量赋值、创建条件和循环逻辑，并且不在页面上显示出任何 Liquid 逻辑代码。
+
+输入
+![](/img/post/P4-liquid-grammar1.png)
+
+则输出如下：
+![](/img/post/P4-liquid-grammar2.png)
+
+**标记分类**
+标记被分为三类：
+- [控制流](#ctrlflow)
+- [迭代](#iteration)
+- [变量赋值](#varassign)
+
+<p id = "filter"></p>
+
+### 过滤器（filter）
+**过滤器** 改变 Liquid 对象的输出。他们被用在输出上，通过一个 `|` 符号分隔。
+
+输入
+{% raw %} 
+<pre class="prettyprint">
+{{ "/my/fancy/url" | append: ".html" }}
+</pre>
+{% endraw %}
+
+输出
+<pre class="prettyprint">
+{{ "/my/fancy/url" | append: ".html" }}
+</pre>
+多个过滤器可以共同作用于同一个输出，并按照从左到右的顺序执行。
+
+输入
+{% raw %} 
+<pre class="prettyprint">
+{{ "adam!" | capitalize | prepend: "Hello " }}
+</pre>
+{% endraw %}
+
+输出
+<pre class="prettyprint"> 
+{{ "adam!" | capitalize | prepend: "Hello " }}
+</pre>
+
+### 其他
+写liquid语句直接就被转换了，直接贴图吧！大概了解一下。 哭唧唧 ≧﹏≦  看完了才发现可以用raw标签标记不处理
+
+# 注释
+comment 标记让你能够在 Liquid 模板中书写的内容不被输出。任何书写在 comment 起始与结束标记之间的内容都不会被输出，如果是 Liquid 代码则不会被执行。
+![](/img/post/P4-liquid-comment.png)
+
+# 原始内容
+`raw` 标记临时禁止处理其所包围的代码
+
+
+<p id = "ctrlflow"></p>
+
+# 控制流
+
+**if**
+只有当某个条件为 `true` 时才执行一段代码。
+![](/img/post/P4-liquid-grammar3.png)
+
+**unless**
+与`if` 相对 – 只有当某个条件不成立时才执行一段代码。
+![](/img/post/P4-liquid-grammar4.png)
+
+**`elsif` / `else`**
+为 if 或 unless 添加更多状态判断。
+![](/img/post/P4-liquid-grammar5.png)
+
+**case/when**
+创建一个开关表达式，用于将一个变量和多个不同值进行比较。`case` 用于初始化一个开关表达式，`when` 用于比较他们的值。
+![](/img/post/P4-liquid-grammar6.png)
+
+<p id = "iteration"></p>
+
+# 迭代／循环
+迭代（或循环）标记（iteration tag）用于重复运行一段代码。
+
+**for**
+重复运行一段代码。
+![](/img/post/P4-liquid-grammar7.png)
+
+**unless**
+与`if` 相对 – 只有当某个条件不成立时才执行一段代码。
+![](/img/post/P4-liquid-grammar4.png)
+
+**`elsif` / `else`**
+为 if 或 unless 添加更多状态判断。
+![](/img/post/P4-liquid-grammar5.png)
+
+**case/when**
+创建一个开关表达式，用于将一个变量和多个不同值进行比较。`case` 用于初始化一个开关表达式，`when` 用于比较他们的值。
+![](/img/post/P4-liquid-grammar6.png)
+
+
+<p id = "varassign"></p>
+
+# 变量
+变量标记（variable tag）用于创建新的 Liquid 变量。
+
+**assign**
+创建一个新变量。
+
+输入
+{% raw %} 
+<pre class="prettyprint">
+{% assign validflag = false %}
+{% if validflag != true %}
+  This statement is valid.
+{% endif %}
+</pre>
+{% endraw %}
+
+输出
+<pre class="prettyprint">
+{% assign validflag = false %}
+{% if validflag != true %}
+  This statement is valid.
+{% endif %}
+</pre>
+将变量用 `"` 包裹之后则将其当做字符串对待，单引号双引号皆可。
+输入
+{% raw %} 
+<pre class="prettyprint">
+{% assign username = "Jack" %}
+{{ username }}
+</pre>
+{% endraw %}
+
+输出
+<pre class="prettyprint">
+{% assign username = "Jack" %}
+{{ username }}
+</pre>
+
+**capture**
+将 `capture` 开始与结束标记之间的字符串捕获之后赋值给一个变量。通过 {% raw %} {% capture %} {% endraw %} 创建的变量都是字符串。
+
+输入
+{% raw %} 
+<pre class="prettyprint">
+{% assign favorite_food = 'pizza' %}
+{% assign age = 35 %}
+
+{% capture about_me %}
+I am {{ age }} and my favorite food is {{ favorite_food }}.
+{% endcapture %}
+
+{{ about_me }}
+
+</pre>
+{% endraw %}
+
+输出
+<pre class="prettyprint">
+{% assign favorite_food = 'pizza' %}
+{% assign age = 35 %}
+
+{% capture about_me %}
+I am {{ age }} and my favorite food is {{ favorite_food }}.
+{% endcapture %}
+
+{{ about_me }}
+
+</pre>
+
+其他常见的**过滤器**部分可以参考官方文档！
+
+参考资料：[Liquid官方文档] 、[Liquid中文文档]
+
+[Liquid官方文档]: https://shopify.github.io/liquid/
+[Liquid中文文档]: https://liquid.bootcss.com/basics/introduction/
