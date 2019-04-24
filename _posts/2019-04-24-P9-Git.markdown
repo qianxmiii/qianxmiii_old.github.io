@@ -1,0 +1,248 @@
+---
+layout: post
+title:  "Git学习"
+date:   2019-04-24 20:21:00 +0800
+categories: posts learn git
+header-img: img/post/P7-headimg.jpeg
+tags:
+    - Mooc
+    - Git
+pid: P9
+---
+
+# Git安装
+下载地址：[https://git-scm.com/downloads][https://git-scm.com/downloads]
+![](/img/post/P9-git1.png)
+
+# Git配置
+配置本地开发账号信息
+
+<pre class="prettyprint">
+git config --global user.name "qianxmiii"  // 配置用户名  --global 针对全局所有仓库
+git config --global user.email "qianxmiii@163.com"   // 配置邮件 --global 针对全局所有仓库
+</pre>
+![](/img/post/P9-git2.png)  
+
+# Git基本命令
+<pre class="prettyprint">
+cd "本地项目的路径"
+git remote add origin git@gitee.com:etmanwenhan/GitDemo.git     //添加远程仓库
+git clone https://xxx               //克隆项目
+git init                            //git初始化版本库                        
+git add filename 或者 git add .      //添加文件到暂存区
+git commit -m "注释"                 //提交本地到仓库
+git push                            //提交到远程服务器仓库
+git pull                            //从远程服务器拉取最新内容
+git status                          //查看状态
+git log                             //查看日志
+</pre>
+
+# Git工作流示例：
+
+1、新项目开始了，首先创建一个项目文件夹
+<pre class="prettyprint">
+mkdir demo // 创建一个项目文件夹
+cd demo    // 进入文件夹下
+git init   //初始化版本库
+</pre>
+![](/img/post/P9-git3.png)
+
+查看目录下隐藏文件，会发现创建了一个.git文件
+<pre class="prettyprint">
+ls -a 
+</pre>
+![](/img/post/P9-git4.png)
+
+查看版本库中文件状态，由于未添加文件，显示无需要提交的文件
+<pre class="prettyprint">
+git status 
+</pre>
+![](/img/post/P9-git5.png)
+
+2、PM提出了一个新需求，此时我们在项目文件夹下创建一个文件
+<pre class="prettyprint">
+echo "git repo" >> test.txt  // 创建test.txt文件并写入内容
+cat test.txt // 查看test.txt文件中内容
+</pre>
+此时查看文件状态，可看到新增的test.txt文件，处于无版本追踪状态
+![](/img/post/P9-git6.png)
+
+3、然后提交文件至暂存区，再查看文件状态，处于未提交至本地仓库状态
+<pre class="prettyprint">
+git add test.txt  // 提交test.txt至暂存区
+或 git add .  //提交目录下所有变更文件至暂存区
+</pre>
+![](/img/post/P9-git7.png)
+
+4、最后从暂存区提交至仓库，再次查看文件状态， `working tree clean` 提示无可提交文件
+<pre class="prettyprint">
+git commit -m "first commit" // 提交至仓库，-m 后为提交描述内容
+</pre>
+![](/img/post/P9-git8.png)
+
+5、此时临近下班，PM又对于之前提的需求不太满意，进行变更，此时我们需要修改test.txt文件，由于还未测试，因此先提交至暂存区，等明天测试后再提交至仓库
+![](/img/post/P9-git9.png)
+![](/img/post/P9-git10.png)
+
+6、等到第二天，PM觉得昨天提的需求变更不合理，还是采用最开始方案吧，因此需要回滚之前已提交至暂存区的文件。
+<pre class="prettyprint">
+git reset HEAD text.txt //回滚文件
+</pre>
+查看回滚后文件已经处于未追踪状态，即未提交至暂存区状态。但是本地工作区的文件还是未回滚。
+![](/img/post/P9-git11.png)
+
+7、最后清除本地工作区，再查看工作区中该文件，已经变更为修改前内容。
+<pre class="prettyprint">
+git checkout -- test.txt 
+</pre>
+![](/img/post/P9-git12.png)
+
+8、PM又提出了新的需求变更，需再次修改test.txt文件，此次经过测试提交至仓库
+![](/img/post/P9-git13.png)
+
+9、等到第二天PM又不满意刚提那部分变更，还是采用第一版吧。
+此时查看所有的提交记录，可以看到总共有两次的提交记录并有其对应的一串commit号
+<pre class="prettyprint">
+git log
+</pre>
+![](/img/post/P9-git14.png)
+
+<pre class="prettyprint">
+git reset --hard 725ef3d4c1fde2fe940977568e3d4c0d7511daaf//将仓库、暂存区及本地工作区中内容都回滚至指定提交版本
+</pre>
+可以看到文件已回滚至第一版
+![](/img/post/P9-git15.png)
+
+# Git 远程仓库
+想通过Git分享代码，或与其他人共同开发，需要使用远程仓库GitHub。
+
+git支持https和git两种传输协议，github分享链接时会有两种协议可选：
+
+`http`传输协议
+![](/img/post/P9-github1.png)
+`git`传输协议
+![](/img/post/P9-github2.png)
+
+**Tips:**
+git使用https协议，每次pull, push都会提示要输入密码，使用git协议，然后使用ssh密钥，这样免去每次都输密码的麻烦
+
+## 使用Git协议配置步骤
+1. 创建SSH key
+2. 设置远程仓库GitHub上的公钥
+
+### 创建SSH key
+大多数 Git 服务器都会选择使用 SSH 公钥来进行授权。系统中的每个用户都必须提供一个公钥用于授权，没有的话就要生成一个。
+SSH 公钥默认储存在/user/.ssh 目录下。
+
+
+`.pub` 后缀的文件就是公钥，另一个文件则是密钥
+![](/img/post/P9-github3.png)
+
+使用`ssh-keygen`创建密钥
+
+<pre class="prettyprint">
+ssh-keygen -t rsa -C "qianxmiii@163.com" //
+</pre>
+
+查看id_rsa.pub文件中内容
+![](/img/post/P9-github4.png)
+
+### 设置远程仓库GitHub上的公钥
+登陆你的github帐户。点击头像，然后 Settings -> SSH and GPG keys -> 点击 New SSH key
+
+将id_rsa.pub中的内容即公钥粘贴至`key`文本栏中，并添加，添加后如图所示
+![](/img/post/P9-github5.png)
+
+验证key是否正常工作。
+<pre class="prettyprint">
+ssh -T git@github.com
+</pre>
+如图所示即为设置成功
+![](/img/post/P9-github6.png)
+
+## 添加远程仓库
+<pre class="prettyprint">
+git remote add origin git@github.com:qianxmiii/qianxmiii.github.io.git  // 添加远程仓库与本地仓库关联
+git pull -u origin master           //从远程服务器拉取最新内容
+git push origin master              //提交到远程服务器仓库
+</pre>
+GitHub创建仓库repository
+
+![](/img/post/P9-github7.png)
+
+可通过上图中GitHub中给的提示 创建一个新仓库并提交至远程仓库
+<pre class="prettyprint">
+echo "# demo" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:qianxmiii/demo.git
+git push -u origin master //本地关联远程仓库，并提交。第二次由于已关联，只需要使用git push即可
+</pre>
+![](/img/post/P9-github8.png)
+可在GitHub demo项目下看到刚刚提交的readme文件
+![](/img/post/P9-github9.png)
+
+## 克隆仓库
+将远程仓库代码克隆到本地，基于本地代码进行开发
+
+<pre class="prettyprint">
+git clone git@github.com:qianxmiii/demo.git
+git push //默认已绑定本地与远程分支，不需要-u
+</pre>
+
+## 标签管理
+### 为什么要使用标签？
+发布一个版本时，我们通常先在版本库中打一个标签（tag），这样，就唯一确定了打标签时刻的版本。将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来。所以，标签也是版本库的一个快照。
+
+Git的标签虽然是版本库的快照，但其实它就是指向某个commit的指针（跟分支很像对不对？但是分支可以移动，标签不能移动），所以，创建和删除标签都是瞬间完成的。
+
+<pre class="prettyprint">
+Git有commit，为什么还要引入tag？
+
+“请把上周一的那个版本打包发布，commit号是6a5819e...”
+
+“一串乱七八糟的数字不好找！”
+
+如果换一个办法：
+
+“请把上周一的那个版本打包发布，版本号是v1.2”
+
+“好的，按照tag v1.2查找commit就行！”
+
+所以，tag就是一个让人容易记住的有意义的名字，它跟某个commit绑在一起。
+</pre>
+
+### 基本命令
+
+`git tag` 查看所有标签
+<pre class="prettyprint">
+git tag  
+</pre>
+
+`git tag <name>` 创建标签
+<pre class="prettyprint">
+git tag v1.0
+</pre>
+
+`git tag -a <name> -m "comment" ` 指定提交信息
+<pre class="prettyprint">
+git tag -a v0.1 -m "version 0.1 released" 
+</pre>
+
+`git tag -d <name>` 删除标签
+<pre class="prettyprint">
+git tag -d v0.1
+</pre>
+
+`git push origin <name>` 发布标签
+<pre class="prettyprint">
+git push origin v1.0
+</pre>
+
+
+
+参考资料：[Spring框架小白的蜕变][Spring框架小白的蜕变]
+
+[Spring框架小白的蜕变]:https://www.imooc.com/learn/1108
+[https://git-scm.com/downloads]:https://git-scm.com/downloads
