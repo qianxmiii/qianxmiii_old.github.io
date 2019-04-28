@@ -10,6 +10,21 @@ tags:
 pid: P9
 ---
 
+#### 目录
+[Git安装](#git安装)
+
+[Git配置](#git配置)
+
+[Git基本命令](#git基本命令)
+
+[Git工作流示例](#git工作流示例)
+
+[Git 远程仓库](#git远程仓库)
+
+[Git 标签管理](#git标签管理)
+
+[Git 分支管理](#git分支管理)
+
 # Git安装
 下载地址：[https://git-scm.com/downloads][https://git-scm.com/downloads]
 ![](/img/post/P9-git1.png)
@@ -26,8 +41,6 @@ git config --global user.email "qianxmiii@163.com"   // 配置邮件 --global �
 # Git基本命令
 <pre class="prettyprint">
 cd "本地项目的路径"
-git remote add origin git@gitee.com:etmanwenhan/GitDemo.git     //添加远程仓库
-git clone https://xxx               //克隆项目
 git init                            //git初始化版本库                        
 git add filename 或者 git add .      //添加文件到暂存区
 git commit -m "注释"                 //提交本地到仓库
@@ -35,9 +48,15 @@ git push                            //提交到远程服务器仓库
 git pull                            //从远程服务器拉取最新内容
 git status                          //查看状态
 git log                             //查看日志
+
+git remote add/rm origin git@gitee.com:etmanwenhan/GitDemo.git     //添加/删除远程仓库
+git clone git@gitee.com:etmanwenhan/GitDemo.git              //克隆项目
+
+
+
 </pre>
 
-# Git工作流示例：
+# Git工作流示例
 
 1、新项目开始了，首先创建一个项目文件夹
 <pre class="prettyprint">
@@ -113,7 +132,7 @@ git reset --hard 725ef3d4c1fde2fe940977568e3d4c0d7511daaf//将仓库、暂存区
 可以看到文件已回滚至第一版
 ![](/img/post/P9-git15.png)
 
-# Git 远程仓库
+# Git远程仓库
 想通过Git分享代码，或与其他人共同开发，需要使用远程仓库GitHub。
 
 git支持https和git两种传输协议，github分享链接时会有两种协议可选：
@@ -191,7 +210,7 @@ git clone git@github.com:qianxmiii/demo.git
 git push //默认已绑定本地与远程分支，不需要-u
 </pre>
 
-## 标签管理
+## Git标签管理
 ### 为什么要使用标签？
 发布一个版本时，我们通常先在版本库中打一个标签（tag），这样，就唯一确定了打标签时刻的版本。将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来。所以，标签也是版本库的一个快照。
 
@@ -220,10 +239,17 @@ Git有commit，为什么还要引入tag？
 git tag  
 </pre>
 
-`git tag <name>` 创建标签
+`git tag <name> <commitid>` 创建标签  不填写commitid，则默认标签是打在最新提交的commit上的
 <pre class="prettyprint">
 git tag v1.0
 </pre>
+
+
+`git show <tagname>` 创建标签  查看标签信息
+<pre class="prettyprint">
+git tag v1.0
+</pre>
+![](/img/post/P9-github12.png)
 
 `git tag -a <name> -m "comment" ` 指定提交信息
 <pre class="prettyprint">
@@ -240,9 +266,16 @@ git tag -d v0.1
 git push origin v1.0
 </pre>
 
+示例：
+![](/img/post/P9-github10.png)
+
+可以在GitHub上看到刚push的标签
+![](/img/post/P9-github11.png)
+
+## Git分支管理
 
 
-参考资料：[Spring框架小白的蜕变][Spring框架小白的蜕变]
+参考资料：[廖雪峰的Git教程][廖雪峰的Git教程]
 
-[Spring框架小白的蜕变]:https://www.imooc.com/learn/1108
+[廖雪峰的Git教程]:https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
 [https://git-scm.com/downloads]:https://git-scm.com/downloads
