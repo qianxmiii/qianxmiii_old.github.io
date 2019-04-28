@@ -15,6 +15,8 @@ pid: P9
 
 [Git配置](#git配置)
 
+[Git暂存区](#git工作区与暂存区)
+
 [Git基本命令](#git基本命令)
 
 [Git工作流示例](#git工作流示例)
@@ -33,42 +35,63 @@ pid: P9
 配置本地开发账号信息
 
 <pre class="prettyprint">
-git config --global user.name "qianxmiii"  // 配置用户名  --global 针对全局所有仓库
-git config --global user.email "qianxmiii@163.com"   // 配置邮件 --global 针对全局所有仓库
+git config --global user.name "qianxmiii"  // 配置用户名  --global 针对本地所有仓库
+git config --global user.email "qianxmiii@163.com"   // 配置邮件 --global 针对本地所有仓库
 </pre>
 ![](/img/post/P9-git2.png)  
+
+# Git工作区与暂存区
+.git 版本库。
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
 
 # Git基本命令
 <pre class="prettyprint">
 cd "本地项目的路径"
-git init                            //git初始化版本库                        
+git init                            //git初始化版本库      
+git diff                            //查看工作区文件与暂存区（即本地更新还未add）文件的区别  
+git diff --cached                   //查看暂存区的文件与仓库分支的区别                       
 git add filename 或者 git add .      //添加文件到暂存区
 git commit -m "注释"                 //提交本地到仓库
-git push                            //提交到远程服务器仓库
+git push -u origin master           //提交到远程服务器仓库（-u 第一次推送时使用）
+                                    // 这样不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令
 git pull                            //从远程服务器拉取最新内容
 git status                          //查看状态
-git log                             //查看日志
+git log <--graph> <--pretty=oneline>//查看日志 --graph 查看分支图 --pretty=oneline 简化输出信息，只显示一行
+git reflog                          //记录操作命令历史
+
+git rm                              // 删除文件并添加至暂存区
+
+// 回退操作
+git reset --hard HEAD^      // 回滚仓库分支到上一个版本
+git reset --hard commit_id  // 回滚仓库分支到指定commit id的版本（可以只写Commit id前几位，Git会自动找）
+
+git reset HEAD <file>       // 撤销暂存区的修改（unstage）
+git checkout -- <file>      // 撤销工作区的修改（与暂存区保持一致，即回到最近一次git commit或git add时的状态）
+
+
 
 git remote add/rm origin git@gitee.com:etmanwenhan/GitDemo.git     //添加/删除远程仓库
-git clone git@gitee.com:etmanwenhan/GitDemo.git              //克隆项目
-
-
+git clone git@gitee.com:etmanwenhan/GitDemo.git                    //克隆项目
 
 </pre>
 
-# Git工作流示例
+**Tips:**
+1. Git 中`HEAD`表示当前版本，也就当前最新提交的commit id，`HEAD^`代表上一个版本,`HEAD^^`代表上上个版本
+
+
+# Git工作示例
 
 1、新项目开始了，首先创建一个项目文件夹
 <pre class="prettyprint">
 mkdir demo // 创建一个项目文件夹
 cd demo    // 进入文件夹下
-git init   //初始化版本库
+git init   // 初始化版本库
 </pre>
 ![](/img/post/P9-git3.png)
 
-查看目录下隐藏文件，会发现创建了一个.git文件
+查看目录下隐藏文件，会发现创建了一个.git文件，这个文件是Git来跟踪管理版本库的。
 <pre class="prettyprint">
-ls -a 
+ls -a  // 查看目录下隐藏文件 
 </pre>
 ![](/img/post/P9-git4.png)
 
@@ -83,7 +106,7 @@ git status
 echo "git repo" >> test.txt  // 创建test.txt文件并写入内容
 cat test.txt // 查看test.txt文件中内容
 </pre>
-此时查看文件状态，可看到新增的test.txt文件，处于无版本追踪状态
+此时查看文件状态，可看到新增的test.txt文件，且为untracked files ：未被追踪的文件，即新建还未被提交至暂存区的文件
 ![](/img/post/P9-git6.png)
 
 3、然后提交文件至暂存区，再查看文件状态，处于未提交至本地仓库状态
@@ -120,7 +143,7 @@ git checkout -- test.txt
 ![](/img/post/P9-git13.png)
 
 9、等到第二天PM又不满意刚提那部分变更，还是采用第一版吧。
-此时查看所有的提交记录，可以看到总共有两次的提交记录并有其对应的一串commit号
+此时查看所有的提交记录，可以看到总共有两次的提交记录并有其对应的一串commit id（版本号）
 <pre class="prettyprint">
 git log
 </pre>
@@ -148,6 +171,7 @@ git使用https协议，每次pull, push都会提示要输入密码，使用git�
 ## 使用Git协议配置步骤
 1. 创建SSH key
 2. 设置远程仓库GitHub上的公钥
+3. 把git的 remote url 修改为git协议(如果使用的http协议需要进行该设置，这样就不用每次都输入密码)
 
 ### 创建SSH key
 大多数 Git 服务器都会选择使用 SSH 公钥来进行授权。系统中的每个用户都必须提供一个公钥用于授权，没有的话就要生成一个。
@@ -178,6 +202,17 @@ ssh -T git@github.com
 </pre>
 如图所示即为设置成功
 ![](/img/post/P9-github6.png)
+
+### 把git的 remote url 修改为git协议
+查看当前的 remote url，如果是git开头则代表使用的git协议，http开头则为http协议
+<pre class="prettyprint">
+git remote -v 
+</pre>
+
+调整远程仓库url
+<pre class="prettyprint">
+git remote set-url origin git@github.com:qianxmiii/qianxmiii.github.io.git
+</pre>
 
 ## 添加远程仓库
 <pre class="prettyprint">
@@ -273,6 +308,26 @@ git push origin v1.0
 ![](/img/post/P9-github11.png)
 
 ## Git分支管理
+<pre class="prettyprint">
+git branch         // 查看所有分支
+</pre>
+创建dev分支，然后切换到dev分支
+<pre class="prettyprint">
+git checkout -b dev
+等同于
+git branch dev     // 创建dev分支
+git checkout dev   // 切换到dev分支
+</pre>
+
+合并指定分支到当前分支
+<pre class="prettyprint">
+git merge dev
+</pre>
+
+删除dev分支
+<pre class="prettyprint">
+git branch -d dev
+</pre>
 
 
 参考资料：[廖雪峰的Git教程][廖雪峰的Git教程]
