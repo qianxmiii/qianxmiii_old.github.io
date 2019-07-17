@@ -1,0 +1,574 @@
+---
+layout: post
+title:  "Python学习 - 进阶版一"
+date:   2019-07-15 09:12:00 +0800
+categories: posts learn python
+header-img: img/post/P7-headimg.jpeg
+tags:
+    - Python
+pid: P12
+---
+
+## Python进阶
+
+### 一、函数式编程
+#### 特点
+* 不是纯函数式编程。允许有变量
+* 支持高阶函数：函数可作为传参
+* 支持闭包：函数可作为返回参数
+* 有限度支持匿名函数
+
+#### 高阶函数
+能接收函数作为参数的函数
+**a)** 变量可指向函数
+
+<pre class="prettyprint">
+>>> f=abs
+>>> print f(-20)
+20
+</pre>
+**b)** 函数名是指向函数的变量
+
+ 高阶函数：示例
+
+<pre class="prettyprint">
+def add(x,y,f):    
+    return f(x)+f(y)
+print add(-1,-2,abs)
+</pre>
+
+#### Python内置高阶函数
+##### a) map()
+
+作用：接收一个**函数 f** 和一个 **list**，并通过把函数 f 依次作用在 list 的每个元素上，得到一个新的 list 并返回
+
+<pre class="prettyprint">
+# 首字母大写其他字母小写
+def format_name(s):
+    return s[0].upper() + s[1:].lower()
+
+print map(format_name, ['adam', 'LISA', 'barT'])
+
+['Adam', 'Lisa', 'Bart']
+</pre>
+
+##### b) reduce()
+reduce()函数接收的参数和 map()类似，一个函数 f，一个list，但行为和 map()不同，reduce()传入的函数 f 必须接收两个参数，reduce()对list的每个元素反复调用函数f，并返回最终结果值。
+<pre class="prettyprint">
+# 求和
+def f(x, y):
+    return x + y
+# 第三个参数是可选参数，可作为计算初始值，作累计运算
+print reduce(f, [1, 3, 5, 7, 9], 100)
+# 计算过程 (((((100+1)+3)+5)+7)+9)
+125
+
+# 求积
+def prod(x, y):
+    return x * y
+print reduce(prod, [2, 4, 5, 7, 12])
+
+3360
+</pre>
+
+##### c) filter()
+**过滤**
+filter()函数接收一个函数 f 和一个list，这个函数 f 的作用是对每个元素进行判断，返回 True或 False，filter()根据判断结果自动过滤掉不符合条件的元素，返回由符合条件元素组成的新list。
+
+<pre class="prettyprint">
+# 用filter()过滤出1~100中平方根是整数的数
+import math
+
+def is_sqr(x):
+    r = int(math.sqrt(x))
+    return r * r == x
+
+print filter(is_sqr, range(1, 101))
+# 结果
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+</pre>
+##### d) sorted()
+
+对list进行排序
+
+<pre class="prettyprint">
+>>> sorted([36, 5, 12, 9, 21])
+
+[5, 9, 12, 21, 36]
+</pre>
+
+作为高阶函数，可以接收传入一个比较函数进行自定义排序
+
+传入两个待比较的元素 x, y，**如果 x 应该排在 y 的前面，返回 -1，如果 x 应该排在 y 的后面，返回 1。如果 x 和 y 相等，返回 0。**
+
+<pre class="prettyprint">
+# 倒序排序
+def reversed_cmp(x, y):
+    if x > y:
+        return -1
+    if x < y:
+        return 1
+    return 0
+sorted([36, 5, 12, 9, 21], reversed_cmp)
+# 结果
+[36, 21, 12, 9, 5]
+</pre>
+
+
+#### 返回函数
+
+<pre class="prettyprint">
+def f():
+    print 'call f()...'
+    # 定义函数g:
+    def g():
+        print 'call g()...'
+    # 返回函数g:
+    return g
+
+>>> x = f()   # 调用f()
+call f()...
+>>> x   # 变量x是f()返回的函数：
+<function g at 0x1037bf320>
+>>> x()   # x指向函数，因此可以调用
+call g()...   # 调用x()就是执行g()函数定义的代码
+</pre>
+
+#### 闭包
+内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况，称为闭包（Closure）。
+示例：
+
+<pre class="prettyprint">
+def calc_sum(lst):
+    # 内层函数
+    def lazy_sum():
+        # 引用了外层函数的变量
+        return sum(lst)
+    return lazy_sum
+</pre>
+
+<pre class="prettyprint">
+def count():
+    fs = []
+    for i in range(1, 4):
+        def f(j):
+            def g():
+                return j*j
+            return g
+        r = f(i)
+        fs.append(r)
+    return fs
+f1, f2, f3 = count()
+print f1(), f2(), f3()
+
+1 4 9
+</pre>
+
+#### 匿名函数
+`lambda`  关键字 代表匿名函数 
+**只能有一个表达式，不写return**
+<pre class="prettyprint">
+# x代表传入参数
+# 等同于
+# def f(x):
+#    return x * x
+>>> map(lambda x: x * x, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+[1, 4, 9, 16, 25, 36, 49, 64, 81]
+</pre>
+
+### 装饰器
+decorator
+**作用：**
+简化代码，避免每个函数编写重复性代码
+**打印日志**：@log
+**检测性能**：@performance
+**数据库事务**：@transaction
+**URL路由**：@post('/register')
+
+
+
+### 二、模块
+
+### 模块与包
+
+<pre class="prettyprint">
+# 引用模块名
+import math
+# 引用包中模块名
+import p1.util
+</pre>
+
+<pre class="prettyprint">
+# 区分包和普通目录：
+包下面有个_init_.py文件
+</pre>
+
+导入模块中某几个函数
+
+<pre class="prettyprint">
+from math import log
+# 不同模块中相同函数可取别名
+from logging import log as logger   # logging的log现在变成了logger
+print log(10)   # 调用的是math的log
+logger(10, 'import from logging')   # 调用的是logging的log
+</pre>
+
+<pre class="prettyprint">
+# 引入math中以下几个函数
+from math import pow, sin, log
+# 不同模块中相同函数名
+import math, logging
+print math.log(10)   # 调用的是math的log函数
+logging.log(10, 'something')   # 调用的是logging的log函数
+</pre>
+
+注：在旧版本中引入新版本的特性时
+
+<pre class="prettyprint">
+# 当新版本的一个特性与旧版本不兼容时，该特性将会在旧版本中添加到__future__中，以便旧的代码能在旧版本中测试新特性
+from __future__ import division
+print 10 / 3
+3.3333333333333335
+</pre>
+
+
+
+#### 安装第三方模块
+
+ 模块管理工具
+
+- easy_install
+- pip
+
+
+
+### 三、面向对象编程
+
+**a) 基础**
+
+类（定义抽象模型）和实例（根据类的定义创建）
+
+<pre class="prettyprint">
+# 类：class关键字
+# object 表示该类从哪个类继承下来的
+class Person(object):
+    def __init__(self,name):
+        self.name = name
+# 实例：类名+()
+a = Person('a')
+</pre>
+
+每个实例可拥有各自不同的属性
+
+**由于Python是动态语言，对每一个实例，都可以直接给他们的属性赋值**
+
+<pre class="prettyprint">
+xiaoming = Person()
+xiaoming.name = 'Xiao Ming'
+xiaoming.gender = 'Male'
+xiaoming.birth = '1990-1-1'
+
+# 不同属性
+xiaohong = Person()
+xiaohong.name = 'Xiao Hong'
+xiaohong.school = 'No. 1 High School'
+xiaohong.grade = 2
+</pre>
+
+**b) 初始化**
+
+`__init__`方法：当创建实例时，**__init__()**方法被自动调用
+
+<pre class="prettyprint">
+class Person(object):
+    # __init__方法第一个参数必须是self（习惯写法可用其他名字） 是指向实例的引用
+    def __init__(self, name, gender, birth):
+        self.name = name
+        self.gender = gender
+        self.birth = birth
+        
+# 创建实例
+xiaoming = Person('Xiao Ming', 'Male', '1991-1-1')
+xiaohong = Person('Xiao Hong', 'Female', '1992-2-2')
+
+# 访问
+print xiaoming.birth
+# 输出 '1991-1-1'
+print xiaohong.gender
+# 输出 'Female'
+</pre>
+要定义关键字参数，使用 `**kw`；
+
+<pre class="prettyprint">
+class Person(object):
+    # 定义**kw支持
+    def __init__(self,name,gender,birth,**kw):
+        self.name = name
+        self.gender = gender
+        self.birth = birth
+        for k, v in kw.iteritems():
+            # 可通过setattr(self, 'name', 'xxx') 设置属性
+            setattr(self, k, v)
+
+xiaoming = Person('Xiao Ming', 'Male', '1990-1-1', job='Student')
+
+print xiaoming.name
+print xiaoming.job
+</pre>
+
+**属性访问限制**：通过属性名来实现
+
+如果一个属性由**双下划线开头(__)**，该属性就无法被外部访问
+
+
+```python
+class Person(object):
+    def __init__(self, name):
+        self.name = name
+        # 无法被访问
+        self.__job = 'Student'
+p = Person('Bob')
+print p.name
+# => Bob
+print p.__job
+# => Error
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Person' object has no attribute '__job'
+```
+
+**c) 类属性**
+实例查看的类属性都是一个，当类属性改变时，所有实例访问到的类属性都改变了
+可直接通过类名.属性名访问
+
+`Person.address`
+
+<pre class="prettyprint">
+class Person(object):
+    address = 'Earth'
+    def __init__(self, name):
+        Person.address = 'Beijing'
+        self.name = name
+        
+p1 = Person('Bob')
+p2 = Person('Alice')
+print p1.address
+# => Beijing
+print p2.address
+# => Beijing
+</pre>
+
+当实例属性和类属性重名时，**实例属性优先级高**，它将屏蔽掉对类属性的访问
+在实例上修改类属性，它实际上并没有修改类属性，而是给实例绑定了一个实例属性
+
+**d) 类方法**
+
+使用`@classmethod`关键字
+
+<pre class="prettyprint">
+class Person(object):
+    count = 0
+    # 通过标记一个 @classmethod，该方法将绑定到 Person 类上
+    @classmethod
+    # 类方法的第一个参数将传入类本身
+    def how_many(cls):
+        return cls.count
+    def __init__(self, name):
+        self.name = name
+        Person.count = Person.count + 1
+
+print Person.how_many()
+p1 = Person('Bob')
+print Person.how_many()
+# 输出
+0
+1
+</pre>
+
+**e) 类的继承**
+
+* 单继承
+
+<pre class="prettyprint">
+class Person(object):    
+    count = 0    
+    @classmethod    
+    def how_many(cls):        
+        return cls.count   
+    
+    def __init__(self, name,gender):        
+        self.name = name        
+        self.gender = gender        
+        Person.count = Person.count + 1
+
+# 继承Person类        
+class Student(Person):    
+    def __init__(self, name,gender,school,score):
+        # 调用父类的初始化方法初始化父类属性
+        # super(Student, self) 返回当前类继承的父类
+        super(Student, self).__init__(name,gender)        
+        self.school = school        
+        self.score = score
+
+print Person.how_many()
+p1 = Student('Bob','male','Hign School',90)
+
+print p1.name
+print p1.school
+</pre>
+
+* 多重继承
+
+<pre class="prettyprint">
+class A(object):
+    def __init__(self, a):
+        print 'init A...'
+        self.a = a
+
+class B(A):
+    def __init__(self, a):
+        super(B, self).__init__(a)
+        print 'init B...'
+
+class C(A):
+    def __init__(self, a):
+        super(C, self).__init__(a)
+        print 'init C...'
+# D继承B和C
+class D(B, C):
+    # 多重继承通过 super()调用__init__()方法时，A 虽然被继承了两次，但__init__()只调用一次：
+    def __init__(self, a):
+        super(D, self).__init__(a)
+        print 'init D...'
+</pre>
+
+**f) 判断类型**
+
+* **isinstance()**
+`isinstance()`：判断变量的类型
+**在一条继承链上，一个实例可以看成它本身的类型，也可以看成它父类的类型**
+*  **type()**
+获取变量的类型，它返回一个 **Type** 对象
+
+<pre class="prettyprint">
+>>> type(123)
+<type 'int'>
+>>> s = Student('Bob', 'Male', 88)
+>>> type(s)
+<class '__main__.Student'>
+</pre>
+*  **dir()**
+获取变量的所有**属性**
+
+<pre class="prettyprint">
+>>> dir(123)   # 整数也有很多属性...
+['__abs__', '__add__', '__and__', '__class__', '__cmp__', ...]
+</pre>
+*  **getattr() 和 setattr( )**
+获取或者设置对象的属性
+
+<pre class="prettyprint">
+>>> getattr(s, 'name')  # 获取name属性
+'Bob'
+
+>>> setattr(s, 'name', 'Adam')  # 设置新的name属性
+
+>>> s.name
+'Adam'
+</pre>
+
+**g) 多态**
+
+类具有继承关系，并且子类类型可以向上转型看做父类类型
+
+<pre class="prettyprint">
+# Person类派生出Student、Teacher类
+class Person(object):
+    def __init__(self, name, gender):
+        self.name = name
+        self.gender = gender
+    # Person类的whoAmI方法
+    def whoAmI(self):
+        return 'I am a Person, my name is %s' % self.name
+
+class Student(Person):
+    def __init__(self, name, gender, score):
+        super(Student, self).__init__(name, gender)
+        self.score = score
+    # Student类的whoAmI方法
+    def whoAmI(self):
+        return 'I am a Student, my name is %s' % self.name
+
+class Teacher(Person):
+    def __init__(self, name, gender, course):
+        super(Teacher, self).__init__(name, gender)
+        self.course = course
+    # Teacher类的whoAmI方法
+    def whoAmI(self):
+        return 'I am a Teacher, my name is %s' % self.name
+
+# 处理
+def who_am_i(x):
+    print x.whoAmI()
+
+p = Person('Tim', 'Male')
+s = Student('Bob', 'Male', 88)
+t = Teacher('Alice', 'Female', 'English')
+
+who_am_i(p)
+who_am_i(s)
+who_am_i(t)
+
+# 输出
+I am a Person, my name is Tim
+I am a Student, my name is Bob
+I am a Teacher, my name is Alice
+</pre>
+
+Python是动态语言，所以，传递给函数 **who_am_i(x)**的参数 **x** 不一定是 Person 或 Person 的子类型。任何数据类型的实例都可以，只要它**有一个whoAmI()**的方法
+
+**<font color ='RED'>动态语言和静态语言（例如Java）最大的差别之一。动态语言调用实例方法，不检查类型，只要方法存在，参数正确，就可以调用。</font>**
+
+
+### 四、定制类
+####  特殊方法
+`print`方法
+任何数据类型的实例都有一个特殊方法`__str__()`
+
+<pre class="prettyprint">
+>>>  print list
+[1,2,3]
+# 其实是 print list.__str__()
+</pre>
+
+<pre class="prettyprint">
+# __str__() 和 __repr__()
+class Person(object):
+    def __init__(self, name, gender):
+        self.name = name
+        self.gender = gender
+    def __str__(self):
+        return '(Person: %s, %s)' % (self.name, self.gender)
+    
+>>> p = Person('Bob', 'male')
+>>> print p
+# 输出
+(Person: Bob, male)
+
+# __len__()
+class Students(object):
+    def __init__(self, *args):
+        self.names = args
+    def __len__(self):
+        return len(self.names)
+    
+>>> ss = Students('Bob', 'Alice', 'Tim')
+>>> print len(ss)
+# 输出
+3
+</pre>
+
+
+参考教程：[初识Python-廖雪峰教程][python]
+
+[python]:https://www.imooc.com/learn/177
