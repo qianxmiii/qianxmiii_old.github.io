@@ -5,7 +5,7 @@ date:   2020-03-31 16:02:00 +0800
 categories: posts learn Aliyun
 header-img: img/post/P7-headimg.jpeg
 tags:
-    - Python
+    - Aliyun
 pid: P14
 ---
 
@@ -22,6 +22,7 @@ pid: P14
 
 #### (三)、安装软件包
 `yum install ftp`
+
 `-y` 自动应答`yes`，保证安装任务一次性完成。
 `yum -y install ftp` 
 
@@ -37,12 +38,15 @@ pid: P14
 ![](/img/post/P14-aliyun4.png)
 
 #### (七)、升级安装包
-**升级所有的软件包
+**升级所有的软件包**
+
 `yum update`
 
-**升级某一个软件包
+**升级某一个软件包**
+
 `yum update ftp`
 
-**升级某一个软件包
+**升级某一个软件包**
+
 `yum check-update`
 
