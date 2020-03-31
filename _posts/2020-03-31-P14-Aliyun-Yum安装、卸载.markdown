@@ -1,0 +1,389 @@
+---
+layout: post
+title:  "Python学习 - 进阶版二"
+date:   2019-07-16 19:16:00 +0800
+categories: posts learn python
+header-img: img/post/P7-headimg.jpeg
+tags:
+    - Python
+pid: P13
+---
+
+## Python进阶二
+
+### 一、错误处理
+`try...except...finally...`
+
+<pre class="prettyprint">
+# 不同类型的错误，由不同的except语句块处理
+try:
+    print 'try...'
+    r = 10 / int('a')
+    print 'result:', r
+except ValueError, e:
+    print 'ValueError:', e
+except ZeroDivisionError, e:
+    print 'ZeroDivisionError:', e
+finally:
+    print 'finally...'
+print 'END
+</pre>
+
+#### (一)、记录错误
+
+<pre class="prettyprint">
+# 通过配置，logging还可以把错误记录到日志文件里，方便事后排查
+# err.py
+import logging
+
+def foo(s):
+    return 10 / int(s)
+
+def bar(s):
+    return foo(s) * 2
+
+def main():
+    try:
+        bar('0')
+    except StandardError, e:
+        logging.exception(e)
+
+main()
+print 'END'
+</pre>
+
+#### (二)、抛出错误
+自定义错误实例，`raise`语句抛出一个错误的实例
+<pre class="prettyprint">
+# err.py
+class FooError(StandardError):
+    pass
+
+def foo(s):
+    n = int(s)
+    if n==0:
+        raise FooError('invalid value: %s' % s)
+    return 10 / n
+</pre>
+
+#### (三)、断言(assert)
+<pre class="prettyprint">
+# err.py
+def foo(s):
+    n = int(s)
+    # n=0会抛出错误
+    assert n != 0, 'n is zero!'
+    return 10 / n
+
+def main():
+    foo('0')
+    
+# 错误提示    
+$ python err.py
+Traceback (most recent call last):
+  ...
+AssertionError: n is zero!
+</pre>
+
+<pre class="prettyprint">
+# 可以用-O参数来关闭assert
+# 关闭后，可把所有的assert语句当成pass来看
+python -O err.py
+</pre>
+#### (四)、logging
+和`assert`比，`logging`不会抛出错误，而且可以输出到文件：
+
+<pre class="prettyprint">
+# err.py
+import logging
+# 定义logging级别：debug，info，warning，error
+logging.basicConfig(level=logging.INFO)
+
+s = '0'
+n = int(s)
+logging.info('n = %d' % n)
+print 10 / n
+</pre>
+#### (五)、pdb
+启动Python的调试器pdb，让程序以单步方式运行，可以随时查看运行状态
+
+<pre class="prettyprint">
+# 对err.py启动调试
+$ python -m pdb err.py
+</pre>
+
+输入命令`n`可以单步执行代码：
+
+任何时候都可以输入命令`p 变量名`来查看变量：
+
+<pre class="prettyprint">
+(Pdb) p s
+'0'
+(Pdb) p n
+0
+</pre>
+
+输入命令`q`结束调试，退出程序：
+
+**设置断点**
+
+`pdb.set_trace()`在出错的地方放该行代码
+
+运行代码，程序会自动在`pdb.set_trace()`暂停并进入pdb调试环境，可以用命令`p`查看变量，或者用命令`c`继续运行：
+
+<pre class="prettyprint">
+# err.py
+import pdb
+
+s = '0'
+n = int(s)
+pdb.set_trace() # 运行到这里会自动暂停
+print 10 / n
+</pre>
+
+### 二、IO编程
+#### (一)、文件读写
+**a) 读文件**
+
+<pre class="prettyprint">
+# 文件地址 ‘r’ - read
+f = open('/Users/michael/test.txt', 'r')
+# 如果文件不存在，open()函数就会抛出一个IOError的错误
+
+# 调用read()方法可以一次读取文件的全部内容，Python把内容读到内存，用一个str对象
+f.read()
+# 输出
+'Hello, world!'
+
+# 调用close()方法关闭文件
+f.close()
+
+# 防止因读写导致异常抛出不关闭文件
+try:
+    f = open('/path/to/file', 'r')
+    print f.read()
+finally:
+    if f:
+        f.close()
+</pre>
+
+可通过`with`简化为
+
+<pre class="prettyprint">
+# 自动调用close()方法
+with open('/path/to/file', 'r') as f:
+    print f.read()
+</pre>
+
+其他方法：
+
+* **read(size)**  按字节读取
+
+* **readline()**  读取一行内容
+* **readlines()**  一次读取所有内容并按行返回`list`
+
+**Tips:** 如果文件很小，`read()`一次性读取最方便；如果不能确定文件大小，反复调用`read(size)`比较保险；如果是配置文件，调用`readlines()`最方便：
+
+<pre class="prettyprint">
+for line in f.readlines():
+    print(line.strip()) # 把末尾的'\n'删掉
+</pre>
+
+**b) file-like Object**
+
+像`open()`函数返回的这种有个`read()`方法的对象，在Python中统称为file-like Object.除了file外，还可以是内存的字节流，网络流，自定义流等等
+
+**c) 二进制文件**
+
+<pre class="prettyprint">
+# 要读取二进制文件，比如图片、视频等等，用'rb'模式打开文件即可
+>>> f = open('/Users/michael/test.jpg', 'rb')
+>>> f.read()
+'\xff\xd8\xff\xe1\x00\x18Exif\x00\x00...' # 十六进制表示的字节
+</pre>
+
+**d) 字符编码**
+
+要读取非ASCII编码的文本文件，就必须以二进制模式打开，再解码。比如GBK编码的文件
+
+<pre class="prettyprint">
+>>> f = open('/Users/michael/gbk.txt', 'rb')
+>>> u = f.read().decode('gbk')
+>>> u
+u'\u6d4b\u8bd5'
+>>> print u
+测试
+</pre>
+
+可使用`codecs`模块帮我们在读文件时自动转换编码
+
+<pre class="prettyprint">
+import codecs
+with codecs.open('/Users/michael/gbk.txt', 'r', 'gbk') as f:
+    f.read() # u'\u6d4b\u8bd5'
+</pre>
+
+**e) 写文件**
+
+<pre class="prettyprint">
+# 'w' or 'wb'
+>>> f = open('/Users/michael/test.txt', 'w')
+>>> f.write('Hello, world!')
+>>> f.close()
+</pre>
+
+<pre class="prettyprint">
+with open('/Users/michael/test.txt', 'w') as f:
+    f.write('Hello, world!')
+</pre>
+
+#### (二)、操作文件和目录
+Python内置的`os`模块也可以直接调用操作系统提供的接口函数
+
+<pre class="prettyprint">
+# 如果是posix，说明系统是Linux、Unix或Mac OS X，如果是nt，就是Windows系统。
+>>> import os
+>>> os.name # 操作系统名字
+'nt'
+</pre>
+
+要获取详细的系统信息，可以调用`uname()`函数：
+
+<pre class="prettyprint">
+# windows 不支持
+>>> os.uname()
+('Darwin', 'iMac.local', '13.3.0', 'Darwin Kernel Version 13.3.0: Tue Jun  3 21:27:35 PDT 2014; root:xnu-2422.110.17~1/RELEASE_X86_64', 'x86_64')
+</pre>
+
+环境变量 `os.environ`
+
+<pre class="prettyprint">
+>>> os.environ
+{'VERSIONER_PYTHON_PREFER_32_BIT': 'no', 'TERM_PROGRAM_VERSION': '326', 'LOGNAME': 'michael', 'USER': 'michael', 'PATH': '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/mysql/bin', ...}
+</pre>
+
+<pre class="prettyprint">
+# 获取某个环境变量的值
+>>> os.getenv('PATH')
+'/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/mysql/bin'
+</pre>
+
+操作文件和目录的函数一部分放在`os`模块中，一部分放在`os.path`模块
+
+<pre class="prettyprint">
+# 查看当前目录的绝对路径:
+>>> os.path.abspath('.')
+'/Users/michael'
+# 在某个目录下创建一个新目录，
+# 首先把新目录的完整路径表示出来:
+>>> os.path.join('/Users/michael', 'testdir')
+'/Users/michael/testdir'
+# 然后创建一个目录:
+>>> os.mkdir('/Users/michael/testdir')
+# 删掉一个目录:
+>>> os.rmdir('/Users/michael/testdir')
+</pre>
+
+
+
+拆分路径时，也不要直接去拆字符串，而要通过`os.path.split()`函数，这样可以把一个路径拆分为两部分，后一部分总是最后级别的目录或文件名
+
+<pre class="prettyprint">
+>>> os.path.split('/Users/michael/testdir/file.txt')
+('/Users/michael/testdir', 'file.txt')
+</pre>
+
+`os.path.splitext()`可以直接让你得到文件扩展名，很多时候非常方便
+
+<pre class="prettyprint">
+# 对文件重命名:
+>>> os.rename('test.txt', 'test.py')
+# 删掉文件:
+>>> os.remove('test.py')
+</pre>
+
+`shutil`模块提供了`copyfile()`
+
+<pre class="prettyprint">
+# 列出当前目录下的所有目录
+>>> [x for x in os.listdir('.') if os.path.isdir(x)]
+['.lein', '.local', '.m2', '.npm', '.ssh', '.Trash', '.vim', 'Adlm', 'Applications', 'Desktop', ...]
+
+# 列出所有的.py文件
+>>> [x for x in os.listdir('.') if os.path.isfile(x) and os.path.splitext(x)[1]=='.py']
+['apis.py', 'config.py', 'models.py', 'pymonitor.py', 'test_db.py', 'urls.py', 'wsgiapp.py']
+</pre>
+
+#### (三)、序列化（pickling）
+
+把变量从内存中变成可存储或传输的过程称之为**序列化**
+
+把变量内容从序列化的对象重新读到内存里称之为**反序列化**，即unpickling
+
+Python提供两个模块来实现序列化：`cPickle`（C语言）和`pickle`（Python）
+
+<pre class="prettyprint">
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+    
+>>> d = dict(name='Bob', age=20, score=88)
+>>> pickle.dumps(d)
+"(dp0\nS'age'\np1\nI20\nsS'score'\np2\nI88\nsS'name'\np3\nS'Bob'\np4\ns."
+</pre>
+
+`pickle.dumps()`方法把任意对象序列化成一个str，或者用另一个方法`pickle.dump()`直接把对象序列化后写入一个file-like Object：
+
+<pre class="prettyprint">
+>>> f = open('dump.txt', 'wb')
+>>> pickle.dump(d, f)
+>>> f.close()
+</pre>
+
+当我们要把对象从磁盘读到内存时，可以先把内容读到一个`str`，然后用`pickle.loads()`方法反序列化出对象，也可以直接用`pickle.load()`方法从一个`file-like Object`中直接反序列化出对象。我们打开另一个Python命令行来反序列化刚才保存的对象：
+
+<pre class="prettyprint">
+>>> f = open('dump.txt', 'rb')
+>>> d = pickle.load(f)
+>>> f.close()
+>>> d
+{'age': 20, 'score': 88, 'name': 'Bob'}
+</pre>
+
+#### JSON
+在不同的编程语言之间传递对象，就必须把对象序列化为标准格式，比如XML，但更好的方法是序列化为JSON
+
+| JSON类型   | Python类型        |
+| ---------- | ----------------- |
+| {}         | dict              |
+| []         | list              |
+| "string"   | 'str'或u'unicode' |
+| 1234.56    | int或float        |
+| true/false | True/False        |
+| null       | None              |
+
+<pre class="prettyprint">
+# 把Python对象变成一个JSON
+>>> import json
+>>> d = dict(name='Bob', age=20, score=88)
+>>> json.dumps(d)
+'{"age": 20, "score": 88, "name": "Bob"}'
+</pre>
+
+<pre class="prettyprint">
+# 把JSON反序列化为Python对象
+>>> json_str = '{"age": 20, "score": 88, "name": "Bob"}'
+>>> json.loads(json_str)
+{u'age': 20, u'score': 88, u'name': u'Bob'}
+</pre>
+
+### 三、进程和线程
+
+
+
+
+
+参考教程：[廖雪峰教程的官方网站][python]
+
+[python]:https://www.liaoxuefeng.com/wiki/897692888725344/923055899540352
