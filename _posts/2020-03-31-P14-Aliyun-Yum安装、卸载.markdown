@@ -17,19 +17,32 @@ pid: P14
 ![](/img/post/P14-aliyun1.png)
 
 #### (二)、查找可以安装的软件包
-`yum list tomcat`
+`yum list ftp`
 ![](/img/post/P14-aliyun2.png)
 
 #### (三)、安装软件包
-`yum install tomcat`
+`yum install ftp`
 `-y` 自动应答`yes`，保证安装任务一次性完成。
-`yum -y install tomcat` 
+`yum -y install ftp` 
 
 #### (四)、卸载软件包
-`yum remove tomcat`
+`yum remove ftp`
 
 #### (五)、列出软件包的依赖 
-`yum deplist tomcat`
+`yum deplist ftp`
+![](/img/post/P14-aliyun3.png)
 
-#### (六)、info 显示软件包的描述信息和概要信息
-`yum deplist tomcat`
+#### (六)、显示软件包的描述信息和概要信息
+`yum info ftp`
+![](/img/post/P14-aliyun4.png)
+
+#### (七)、升级安装包
+**升级所有的软件包
+`yum update`
+
+**升级某一个软件包
+`yum update ftp`
+
+**升级某一个软件包
+`yum check-update`
+
