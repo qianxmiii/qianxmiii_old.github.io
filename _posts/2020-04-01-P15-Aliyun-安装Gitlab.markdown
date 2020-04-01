@@ -11,7 +11,7 @@ tags:
 pid: P15
 ---
 
-## Gitlab使用
+## Gitlab安装与使用
 
 ### 一、环境准备
 #### (一)、安装和打开 http 和 ssh 的权限
@@ -66,4 +66,41 @@ gitlab-ctl reconfigure
 gitlab-ctl restart
 </pre>
 
+### 二、Gitlab基础命令
+#### (一)、重新加载配置并启动
+<pre class="prettyprint">
+sudo gitlab-ctl reconfigure
+</pre>
+
+#### (二)、重启gitlab 
+<pre class="prettyprint">
+sudo gitlab-ctl restart
+</pre>
+
+#### (三)、查看gitlab运行状态
+<pre class="prettyprint">
+sudo gitlab-ctl status
+</pre>
+
+#### (四)、停止全部服务
+<pre class="prettyprint">
+sudo gitlab-ctl stop
+</pre>
+
+#### (五)、删除gitlab（保留数据）
+<pre class="prettyprint">
+sudo gitlab-ctl uninstall
+</pre>
+
+#### (五)、删除所有数据，重新开始
+<pre class="prettyprint">
+sudo gitlab-ctl cleanse
+</pre>
+
+#### (六)、进入控制台
+<pre class="prettyprint">
+gitlab-rails console
+</pre>
+
+注：虽然最终结果是失败了，服务器只有2G内存，都访问不了。
 
