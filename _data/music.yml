@@ -4,6 +4,12 @@ P1:
     music_name: You Are Beautiful
     singer: 刘沁
     music_id: 481535277
+P2:
+    music_server: xiami
+    music_type: song
+    music_name: 知足
+    singer: 五月天
+    music_id: 3599309
 Default:
     music_server: netease
     music_type: song
