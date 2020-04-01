@@ -13,7 +13,9 @@
 <!-- require MetingJS -->
 <!-- data-server 是歌服务的提供者 netease：网易；tencent：腾讯；xiami：虾米；kugou：酷狗；baidu：百度-->
 <!-- data-type 是歌服务的提供者 playlist：歌单；song：单曲；专辑：album；关键词：search；歌手：artist-->
+<!--
 <div class="aplayer" data-id="60198" data-server="netease" data-type="playlist"></div>
-<div class="aplayer" data-id="002QE24W26baEy" data-server="tencent" data-type="album" data-fixed="true" data-autoplay="false" data-volume="1.0" data-list-max-height="200px" data-list-folded="true"></div>
+<div class="aplayer" data-id="002QE24W26baEy" data-server="tencent" data-type="album" data-fixed="true" data-autoplay="false" data-volume="1.0" data-list-max-height="200px" data-list-folded="true"></div> 
+  -->
+<div class="aplayer" data-id={{ music.music_id }} data-server={{ music.music_server }} data-type={{ music.music_type }} data-fixed="true" data-autoplay="false" data-volume="1.0" data-list-max-height="200px" data-list-folded="true"></div>
 
-</script><meting-js	server="netease" type="song" id={{ music.music_id }}</meting-js>
