@@ -1,3 +1,9 @@
+P0:
+    music_server: netease
+    music_type: song
+    music_name: 天空之城（经典钢琴版）
+    singer: 方迪兰dylanf
+    music_id: 864711417
 P1:
     music_server: netease
     music_type: song
@@ -10,6 +16,84 @@ P2:
     music_name: 知足
     singer: 五月天
     music_id: 3599309
+P3:
+    music_server: xiami
+    music_type: song
+    music_name: 玫瑰少年
+    singer: 五月天
+    music_id: 1812583755
+P4:
+    music_server: xiami
+    music_type: song
+    music_name: 情深深雨濛濛
+    singer: 杨胖雨
+    music_id: 1811712582
+P5:
+    music_server: netease
+    music_type: song
+    music_name: 无骨无花，无我无他
+    singer: 尚东峰
+    music_id: 863706084
+P6:
+    music_server: netease
+    music_type: song
+    music_name: 烟火里的尘埃
+    singer: 华晨宇
+    music_id: 29004400
+P7:
+    music_server: netease
+    music_type: song
+    music_name: 起风了
+    singer: 买辣椒也用券
+    music_id: 1330348068
+P8:
+    music_server: netease
+    music_type: song
+    music_name: 盗将行
+    singer: 花粥 / 马雨阳
+    music_id: 574566207
+P9:
+    music_server: netease
+    music_type: song
+    music_name: 花落知多少
+    singer: 倪健
+    music_id: 491294068
+P10:
+    music_server: netease
+    music_type: song
+    music_name: 有可能的夜晚
+    singer: 曾轶可
+    music_id: 26217171
+P11:
+    music_server: netease
+    music_type: song
+    music_name: 云烟成雨
+    singer: 房东的猫
+    music_id: 513360721
+P12:
+    music_server: netease
+    music_type: song
+    music_name: 望
+    singer: 小时姑娘
+    music_id: 507502138
+P13:
+    music_server: netease
+    music_type: song
+    music_name: 周深
+    singer: 小时姑娘
+    music_id: 413812448
+P14:
+    music_server: netease
+    music_type: song
+    music_name: 多想在平庸的生活拥抱你
+    singer: 隔壁老樊
+    music_id: 1346104327
+P15:
+    music_server: netease
+    music_type: song
+    music_name: 年少有为
+    singer: 李荣浩
+    music_id: 1293886117
 Default:
     music_server: netease
     music_type: song
