@@ -6,6 +6,8 @@ P1:
     music_id: 481535277
 
 Default:
+    music_server:netease
+    music_type:song
     music_name: 恋爱循环
     singer: 花泽香菜
     music_id: 579954
