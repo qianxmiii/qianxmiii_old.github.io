@@ -94,6 +94,12 @@ P15:
     music_name: 年少有为
     singer: 李荣浩
     music_id: 1293886117
+P16:
+    music_server: netease
+    music_type: song
+    music_name: 天才白痴梦
+    singer: 许冠杰
+    music_id: 172416
 Default:
     music_server: netease
     music_type: song
